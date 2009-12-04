@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="constructor">
+
+	<bean id="buildInvokerTabExtension"
+        class="buildinvoker.extensions.BuildInvokerTabExtension"
+        init-method="register" 
+        />
+ <!-- 
+    <bean id="webHookIndexPageController" 
+     	class="webhook.teamcity.extension.WebHookIndexPageController" 
+     	init-method="register" 
+     	/>
+
+     <bean id="webHookAjaxSettingsListPageController" 
+     	class="webhook.teamcity.extension.WebHookAjaxSettingsListPageController" 
+     	init-method="register" 
+     	/>
+
+     <bean id="webHookAjaxEditPageController" 
+     	class="webhook.teamcity.extension.WebHookAjaxEditPageController" 
+     	init-method="register" 
+     	/>
+      -->			
+     <bean id="buildInvokerProjectSettings" 
+     	class="buildinvoker.settings.BuildInvokerProjectSettings" 
+     	/>
+
+     <bean id="buildInvokerProjectSettingsFactory" 
+     	class="buildinvoker.settings.BuildInvokerProjectSettingsFactory" 
+     	/>
+
+     <bean id="projectNameResolverBean" 
+     	class="buildinvoker.beans.ProjectNameResolverBean" 
+     	/>
+
+</beans>
