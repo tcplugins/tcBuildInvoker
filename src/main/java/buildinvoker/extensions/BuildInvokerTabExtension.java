@@ -105,8 +105,13 @@ public class BuildInvokerTabExtension extends ViewLogTab {
     	
         List<BuildInvokerConfig> invokers = settings.findInvokersForBuildType(sBuild.getBuildTypeId());
         for (BuildInvokerConfig invoker : invokers){
-        	if (invoker.getBuildNameToInvoke() == null){
+        	//if (server.getProjectManager().findBuildTypeById(invoker.getBuildToInvoke()).getFullName() != null){
+        	//if (invoker.getBuildNameToInvoke() == null){
+        	if (server.getProjectManager().findBuildTypeById(invoker.getBuildToInvoke()) != null){
         		invoker.setBuildNameToInvoke(server.getProjectManager().findBuildTypeById(invoker.getBuildToInvoke()).getFullName());
+        		//invoker.setBuildNameToInvoke(invoker.getBuildToInvoke());
+        	} else {
+        		invoker.setEnabled(false);
         	}
         }
         model.put("invokers", invokers);

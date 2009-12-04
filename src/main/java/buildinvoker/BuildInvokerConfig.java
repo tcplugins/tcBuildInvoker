@@ -125,6 +125,10 @@ public class BuildInvokerConfig {
 		return enabled;
 	}
 
+	public Boolean getEnabled() {
+		return enabled;
+	}
+	
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}

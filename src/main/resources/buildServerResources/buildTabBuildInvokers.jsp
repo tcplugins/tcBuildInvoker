@@ -8,6 +8,7 @@
 
 <c:if test="${hasPermission}" >
 			<c:forEach items="${invokers}" var="invoker">
+			<c:if test="${invoker.enabled}">
 			<div style="background-color:#F5F5F5; padding: 0.5em 1em 1em 1em; border: solid 1px #ccc; margin:1em; width:60%;">
 			<jsp:useBean id="invoker" type="buildinvoker.BuildInvokerConfig"/>
 		  	 <form method="get" action="action.html">
@@ -43,5 +44,6 @@
 		  		</table>
 		  		</form>
 		  	</div>		
+		  	</c:if>
 		  	</c:forEach>  
 </c:if>
