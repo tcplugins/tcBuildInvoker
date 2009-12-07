@@ -102,7 +102,7 @@ public class BuildInvokerTabExtension extends ViewLogTab {
 		this.settings = 
 			(BuildInvokerProjectSettings)this.projSettings.getSettings(sBuild.getProjectId(), "buildInvokers");
     	String message = this.settings.getBuildInovokersAsString();
-    	//this.setTabTitle(settings.getTabName());
+    	model.put("jspHome",myPluginPath);
     	
     	List<Artifact> artifacts = new ArrayList<Artifact>();
     	

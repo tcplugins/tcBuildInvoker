@@ -27,6 +27,7 @@ public class BuildInvokerConfig {
 	private String buildToInvoke;
 	private String buildNameToInvoke = null;
 	private String invokeBuildButtonText;
+	private String uniqueKey = "";
 
 	private List <InvokerBuild> orderedBuildCollection;
 	private List <CustomParameter> orderedParameterCollection;
@@ -34,6 +35,10 @@ public class BuildInvokerConfig {
 	
 	@SuppressWarnings("unchecked")
 	public BuildInvokerConfig (Element e){
+		
+		int Min = 1000000, Max = 1000000000;
+		Integer Rand = Min + (int)(Math.random() * ((Max - Min) + 1));
+		this.setUniqueKey(Rand.toString());
 
 		orderedBuildCollection = new ArrayList<InvokerBuild>();
 		orderedParameterCollection = new ArrayList<CustomParameter>();
@@ -148,6 +153,20 @@ public class BuildInvokerConfig {
 
 	public List<CustomParameter> getOrderedParameterCollection() {
 		return orderedParameterCollection;
+	}
+
+	/**
+	 * @param uniqueKey the uniqueKey to set
+	 */
+	private void setUniqueKey(String uniqueKey) {
+		this.uniqueKey = uniqueKey;
+	}
+
+	/**
+	 * @return the uniqueKey
+	 */
+	public String getUniqueKey() {
+		return uniqueKey;
 	}
 
 }

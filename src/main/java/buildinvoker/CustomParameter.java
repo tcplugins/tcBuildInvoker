@@ -39,7 +39,7 @@ public class CustomParameter {
 		if (this.type.equals("hidden")) {
 			s.append("<input type=\"hidden\" name=\"" + this.scope + ".name\" value=\"" + this.name + '"');
 			s.append("<input type=\"hidden\" name=\"" + this.scope + ".value\" value=\"" + this.value + '"');
-			s.append("<tr><td>" + this.scope + "." + this.name + "</td><td>" + this.value + "</td></tr>");
+			s.append("<tr><td class=\"hiddenParam\">" + this.scope + "." + this.name + "</td><td class=\"hiddenParam\">" + this.value + "</td></tr>");
 		} else if (this.type.equals("option")){
 			s.append("<input type=\"hidden\" name=\"" + this.scope + ".name\" value=\"" + this.name + '"');
 			s.append("<tr><td>" + this.scope + "." + this.name + "</td>");
