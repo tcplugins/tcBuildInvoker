@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
   <buildInvokers tabName="Run Deploy">
     <buildInvoker buildToInvoke="bt1" invokeBuildButtonText="Run">
       <invokerBuild invokeFrom="bt3" displayOrder="1" enabled="true"/>

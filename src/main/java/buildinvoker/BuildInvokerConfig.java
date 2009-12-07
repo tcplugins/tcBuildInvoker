@@ -4,17 +4,19 @@ package buildinvoker;
 import java.util.ArrayList;
 import java.util.List;
 
-import jetbrains.buildServer.serverSide.SBuildServer;
-
 import org.jdom.Element;
 
 /*
- *  <buildInvoker invokeBuildTypeId="bt1" invokeBuildButtonText="Run">
-      <invokerBuild buildTypeId="bt3" displayOrder="1" enabled="true"/>
-      <invokerBuild buildTypeId="bt2" displayOrder="2" enabled="true"/>
+ *  
+    <buildInvoker buildToInvoke="bt1" invokeBuildButtonText="Run">
+      <invokerBuild invokeFrom="bt3" displayOrder="1" enabled="true"/>
+      <invokerBuild invokeFrom="bt2" displayOrder="6" enabled="true"/>
       <customParameter type="hidden" name="name1" value="value1" scope="env"/>
       <customParameter type="hidden" name="name2" value="value2" scope="env"/>
       <customParameter type="artifact" name="artifact1" scope="env"/>
+      <customParameter type="artifact" name="artifact2" scope="system"/>
+      <customParameter type="artifact" name="artifact3" scope="env"/>
+      <customParameter type="option" name="deployTo" value="dev:uat:integration" scope="env"/>
     </buildInvoker>
  * 
  */
@@ -45,6 +47,12 @@ public class BuildInvokerConfig {
 			this.invokeBuildButtonText = e.getAttributeValue("invokeBuildButtonText");
 		}
 		
+		/*
+		  <customParameter type="hidden" name="name2" value="value2" scope="env"/>
+	      <customParameter type="artifact" name="artifact1" scope="env"/>
+	      <customParameter type="option" name="deployTo" value="dev:uat:integration" scope="env"/>
+		*/
+		
 		List<Element> customParameterList = e.getChildren("customParameter");
 		if (customParameterList.size() > 0){
 			for(Element customParameter : customParameterList)
@@ -61,7 +69,7 @@ public class BuildInvokerConfig {
 		}
 		
 		
-		// <invokerBuild buildTypeId="bt2" displayOrder="2" enabled="true"/>
+		/* <invokerBuild invokeFrom="bt3" displayOrder="1" enabled="true"/> */
 		List<Element> invokerBuildList = e.getChildren("invokerBuild");
 		if (invokerBuildList.size() > 0){
 			for(Element invoker : invokerBuildList)

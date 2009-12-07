@@ -1,6 +1,5 @@
 package buildinvoker;
 
-import org.jdom.Attribute;
 import org.jdom.Element;
 
 public class CustomParameter {

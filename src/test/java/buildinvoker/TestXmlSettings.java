@@ -17,6 +17,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -62,8 +63,31 @@ public class TestXmlSettings {
 		
 		Element e = new Element("buildInvokers");
 		settings.writeTo(e);
+		System.out.println(e.toString());
+		
+		Document d = new Document(e);
+		
+		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+
+		org.jdom.output.XMLOutputter outputter = new org.jdom.output.XMLOutputter();
+		outputter.setFormat(Format.getPrettyFormat());
+
+		try {
+			outputter.output(d, baos);
+			System.out.println(baos.toString());
+			
+			baos.reset();
+			
+			outputter.output(this.getFullConfigElement(), baos);
+			System.out.println(baos.toString());
+
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		//assertEquals(this.getFullConfigElement(),e);
-	
 	}
 	
 	@Test
@@ -91,6 +115,7 @@ public class TestXmlSettings {
 		for (BuildInvokerConfig config : configs){
 			System.out.println("We will be invoking build: " + config.getBuildToInvoke());
 			System.out.println("This build is enabled: " + config.isEnabled().toString());
+			System.out.println("invokeBuildButtonText: " + config.getInvokeBuildButtonText().toString());
 			//System.out.println("This build has a displayOrder of:" config.get);
 			for (CustomParameter cp : config.getOrderedParameterCollection()){
 				System.out.println(cp.getScope() + "." + cp.getName() + ": " + cp.getScope() + "." + cp.getValue() + "(" + cp.getType() + ")");
