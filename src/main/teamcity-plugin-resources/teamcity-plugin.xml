@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<teamcity-plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="urn:shemas-jetbrains-com:teamcity-plugin-v1-xml">
+  <info>
+    <name>tcBuildInvoker</name>
+    <display-name>Build Invoker plugin</display-name>
+    <version>${version}</version>
+    <description>Adds a tab to build results page allowing you to run a pre-configured build based on values from the current build</description>
+  </info>
+  <deployment use-separate-classloader="false"/>
+</teamcity-plugin>
