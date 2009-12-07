@@ -1,5 +1,6 @@
 package buildinvoker;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -59,7 +60,7 @@ public class TestXmlSettings {
 		
 		System.out.println(settings.getTabName());
 		
-		Element e = new Element("blah");
+		Element e = new Element("buildInvokers");
 		settings.writeTo(e);
 		//assertEquals(this.getFullConfigElement(),e);
 	

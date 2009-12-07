@@ -80,7 +80,7 @@
 	<repositories>
 	 <repository>
       <id>tcwebhooks.sourceforge</id>
-      <url>http://tcwebhooks.svn.sourceforge.net/svnroot/tcwebhooks/maven2-repo</url>
+      <url>http://tcplugins.svn.sourceforge.net/svnroot/tcplugins/maven2-repo</url>
      </repository>
 	</repositories>
 	<dependencies>
@@ -136,6 +136,14 @@
 		<dependency>
 			<groupId>com.jetbrains.teamcity</groupId>
 			<artifactId>common-api</artifactId>
+			<version>4.0.2</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
+		<dependency>
+			<groupId>com.jetbrains.teamcity</groupId>
+			<artifactId>artefacts</artifactId>
 			<version>4.0.2</version>
 			<scope>provided</scope>
 		</dependency>

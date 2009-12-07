@@ -86,38 +86,23 @@ public class BuildInvokerConfig {
 		return null;
 	}
 	
-	/*
-	private void populateBuildName(){
-		this.buildNameToInvoke = server.getProjectManager().findBuildTypeById(this.buildToInvoke).getFullName();
-	}*/
-
-/*	
-	private Element getKeyAndValueAsElement(String key, String elementName){
-		Element e = new Element(elementName);
-		if (this.extraParameters.containsKey(key)){
-			e.setAttribute("name", key);
-			e.setAttribute("value",this.extraParameters.get(key));
-		}
-		return e;
-	}
-	
 	public Element getAsElement(){
 		Element el = new Element("buildInvoker");
-		el.setAttribute("myBuildTypeId", this.getMyBuildTypeId());
-		el.setAttribute("enabled", String.valueOf(this.enabled));
-		el.setAttribute("invokeBuildTypeId", this.getInvokeBuildTypeId());
-		el.setAttribute("invokebuildTarget", this.getInvokebuildTarget());
-		
-		if (this.extraParameters.size() > 0){
-			Element paramsEl = new Element("parameters");
-			for (Iterator<String> i = this.extraParameters.values().iterator(); i.hasNext();){
-				paramsEl.addContent(this.getKeyAndValueAsElement(i.next(), "param"));
+		el.setAttribute("buildToInvoke", this.getBuildToInvoke());
+		el.setAttribute("invokeBuildButtonText", this.getInvokeBuildButtonText());
+
+		if (this.orderedBuildCollection.size() > 0){
+			for (InvokerBuild build : this.orderedBuildCollection){
+				el.addContent(build.getAsElement());
 			}
-			el.addContent(paramsEl);
+		}
+		if (this.orderedParameterCollection.size() > 0){
+			for (CustomParameter param : this.orderedParameterCollection){
+				el.addContent(param.getAsElement());
+			}
 		}
 		return el;
 	}
-	*/
 
 	// Getters and Setters..
 

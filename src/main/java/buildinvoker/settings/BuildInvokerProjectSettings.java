@@ -4,12 +4,10 @@ package buildinvoker.settings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import jetbrains.buildServer.log.Loggers;
-import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.settings.ProjectSettings;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 
@@ -72,15 +70,15 @@ public class BuildInvokerProjectSettings implements ProjectSettings {
      * in memory. 
      */
     {
+    	parentElement.setAttribute("enabled", String.valueOf(this.tabName));
     	Loggers.SERVER.debug(this.getClass().getName() + ":writeTo :: " + parentElement.toString());
         if(buildInvokerConfigs != null)
         {
-            for(Iterator<BuildInvokerConfig> biConf = buildInvokerConfigs.iterator(); biConf.hasNext();)
+            for(BuildInvokerConfig biConfig : buildInvokerConfigs)
             {
-                BuildInvokerConfig biConfig = biConf.next();
-            	//Element el = biConfig.getAsElement();
-            	//Loggers.SERVER.debug(el.toString());
-                //parentElement.addContent(el);
+                Element el = biConfig.getAsElement();
+            	Loggers.SERVER.debug(el.toString());
+                parentElement.addContent(el);
 				Loggers.SERVER.debug(this.getClass().getName() + ":readFrom :: myBuildTypeId " + biConfig.getBuildToInvoke());
 				Loggers.SERVER.debug(this.getClass().getName() + ":readFrom :: enabled " + String.valueOf(biConfig.isEnabled()));
 				//Loggers.SERVER.debug(this.getClass().getName() + ":readFrom :: invokeBuildTypeId " + String.valueOf(biConfig.getInvokeBuildTypeId()));

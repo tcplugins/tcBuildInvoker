@@ -31,8 +31,4 @@
      	class="buildinvoker.settings.BuildInvokerProjectSettingsFactory" 
      	/>
 
-     <bean id="projectNameResolverBean" 
-     	class="buildinvoker.beans.ProjectNameResolverBean" 
-     	/>
-
 </beans>

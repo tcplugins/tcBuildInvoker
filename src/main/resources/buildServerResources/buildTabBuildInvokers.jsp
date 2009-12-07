@@ -1,5 +1,6 @@
 <%@ include file="/include.jsp" %>
-	
+<%@ page import="jetbrains.buildServer.web.ArtifactsTreePrinter"%>
+
 <c:if test="not ${hasPermission}" >
 
 	Sorry, you need "Run Build" permission to run a build for this project.
@@ -23,7 +24,21 @@
 		  	  	<tr style="font-size:90%;"><th style="width:50%;">Parameter Name</th><th style="width:50%;">Parameter Value</th></tr>
 		  	  	<c:forEach items="${invoker.orderedParameterCollection}" var="parameter">
 		  	  	<jsp:useBean id="parameter" type="buildinvoker.CustomParameter"/>
-		  	  		${parameter.asHtml}
+		  	  		<c:if test="${parameter.isArtifact}" >
+		  	  			<c:if test="${artifactsSize > 0}" >
+			  	  			${parameter.artifactStartAsHtml}
+							<c:forEach items="${artifacts}" var="artifact">
+								<option value="${artifact.fullName}">${artifact.fullName} (${artifact.sizeHumanReadable})</option>
+							</c:forEach>
+							${parameter.artifactEndAsHtml}
+						</c:if>
+						<c:if test="${artifactsSize == 0}" >
+							${parameter.noArtifactsAsHtml}
+						</c:if>
+					</c:if>
+					<c:if test="${not parameter.isArtifact}" >	
+			  	  		 ${parameter.asHtml}
+			  	  	</c:if>
 		  	  	</c:forEach>
 
 		  	  	<input type="hidden" name="env.name" value="buildIdToInvoke" />

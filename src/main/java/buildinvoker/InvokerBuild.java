@@ -1,5 +1,7 @@
 package buildinvoker;
 
+import org.jdom.Element;
+
 public class InvokerBuild {
 	/* <invokerBuild buildTypeId="bt2" displayOrder="2" enabled="true"/> */
 	
@@ -24,5 +26,13 @@ public class InvokerBuild {
 
 	public Boolean isEnabled() {
 		return enabled;
+	}
+
+	public Element getAsElement(){
+		Element el = new Element("customParameter");
+		el.setAttribute("invokeFrom", this.buildTypeId);
+		el.setAttribute("displayOrder", String.valueOf(this.displayOrder));
+		el.setAttribute("enabled", String.valueOf(this.enabled));
+		return el;
 	}
 }

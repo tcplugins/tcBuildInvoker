@@ -2,6 +2,9 @@ package buildinvoker.extensions;
 
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +15,7 @@ import jetbrains.buildServer.serverSide.ProjectManager;
 import jetbrains.buildServer.serverSide.SBuild;
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.SBuildType;
+import jetbrains.buildServer.serverSide.artifacts.ArtifactsInfo;
 import jetbrains.buildServer.serverSide.auth.Permission;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 import jetbrains.buildServer.users.SUser;
@@ -23,6 +27,10 @@ import jetbrains.buildServer.web.util.SessionUser;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.intellij.execution.process.OSProcessHandler;
+
+import buildinvoker.Artifact;
+import buildinvoker.ArtifactListBuilder;
 import buildinvoker.BuildInvokerConfig;
 import buildinvoker.settings.BuildInvokerProjectSettings;
 
@@ -96,7 +104,19 @@ public class BuildInvokerTabExtension extends ViewLogTab {
     	String message = this.settings.getBuildInovokersAsString();
     	//this.setTabTitle(settings.getTabName());
     	
+    	List<Artifact> artifacts = new ArrayList<Artifact>();
+    	
+    	File artPath = new File(server.getArtifactsDirectory() + File.separator + server.getProjectManager().findProjectById(sBuild.getProjectId()).getName() + File.separator  + sBuild.getBuildTypeName() + File.separator + String.valueOf(sBuild.getBuildId()) + File.separator);
+    	try {
+			artifacts = ArtifactListBuilder.getArtifactFilesWithSizeAndWithoutPrefix(artPath);
+		} catch (FileNotFoundException e) {
+			// So there's no artifacts. That's ok. They might not exist, or might have been cleaned up.
+		}
+    	
         SUser myUser = SessionUser.getUser(request);
+        
+        model.put("artifacts", artifacts);
+        model.put("artifactsSize", artifacts.size());
         model.put("hasPermission", myUser.isPermissionGrantedForProject(sBuild.getProjectId(), Permission.RUN_BUILD));
         
         model.put("invokerBuildId", sBuild.getBuildId());
