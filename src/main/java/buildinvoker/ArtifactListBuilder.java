@@ -52,6 +52,8 @@ public final class ArtifactListBuilder {
 			  artifacts.add(new Artifact(file,aStartingDir));
 		  }
 	  }
+	  Comparator<Artifact> rankComparator = new ArtifactRankingComparator();
+	  Collections.sort(artifacts, rankComparator);
 	  return artifacts;
 	  
   }

@@ -65,6 +65,10 @@
 		  	  	<input type="hidden" name="env.value" value="${invokerBuildId}" />		  	  	
 		  	  	<tr><td class="hiddenParam">env.buildInvokedFrom</td><td class="hiddenParam">${invokerBuildId}</td></tr>
 
+		  	  	<input type="hidden" name="env.name" value="buildNumberInvokedFrom" />
+		  	  	<input type="hidden" name="env.value" value="${invokerBuildNumber}" />		  	  	
+		  	  	<tr><td class="hiddenParam">env.buildNumberInvokedFrom</td><td class="hiddenParam">${invokerBuildNumber}</td></tr>
+		  	  	
 		  		<tr>
 		  			<td colspan=2 style="text-align:right;"><input type="submit" value="${invoker.invokeBuildButtonText}" /></td>
 		  		</tr>

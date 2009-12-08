@@ -14,8 +14,6 @@ import jetbrains.buildServer.log.Loggers;
 import jetbrains.buildServer.serverSide.ProjectManager;
 import jetbrains.buildServer.serverSide.SBuild;
 import jetbrains.buildServer.serverSide.SBuildServer;
-import jetbrains.buildServer.serverSide.SBuildType;
-import jetbrains.buildServer.serverSide.artifacts.ArtifactsInfo;
 import jetbrains.buildServer.serverSide.auth.Permission;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 import jetbrains.buildServer.users.SUser;
@@ -26,8 +24,6 @@ import jetbrains.buildServer.web.openapi.WebControllerManager;
 import jetbrains.buildServer.web.util.SessionUser;
 
 import org.jetbrains.annotations.NotNull;
-
-import com.intellij.execution.process.OSProcessHandler;
 
 import buildinvoker.Artifact;
 import buildinvoker.ArtifactListBuilder;
@@ -46,18 +42,15 @@ public class BuildInvokerTabExtension extends ViewLogTab {
 			PagePlaces pagePlaces, ProjectManager projectManager, 
 			ProjectSettingsManager settings, WebControllerManager manager,
 			PluginDescriptor pluginDescriptor, SBuildServer server){
-		//super(myTitle, myTitle, null, projectManager);
-		//projectManager.g
-		//super("webHooks", "WebHooks", manager, projectManager);
+
 		super("buildInvoker", "BuildInvoker", pagePlaces, server);
 		this.projSettings = settings;
 		this.server = server;
 		myPluginPath = pluginDescriptor.getPluginResourcesPath();
-		Loggers.SERVER.info("BuildInvokerTabExtension Constructor is being called");
+		Loggers.SERVER.debug("BuildInvokerTabExtension Constructor is being called");
 	}
 
 	public boolean isAvailable(@NotNull HttpServletRequest request) {
-		Loggers.SERVER.info("isAvailable is being called");
 		this.settings = 
 			(BuildInvokerProjectSettings)this.projSettings.getSettings(this.server.findBuildInstanceById(Long.parseLong(request.getParameter("buildId"))).getProjectId(), "buildInvokers");
 			
@@ -69,34 +62,12 @@ public class BuildInvokerTabExtension extends ViewLogTab {
 		return false;
 	}
 
-	
-	@SuppressWarnings("unchecked")
-	protected void fillModel(Map model, HttpServletRequest request,
-			 @NotNull SBuildType buildType, SUser user) {
-		Loggers.SERVER.info("BuildInvokerTabExtension Constructor is being called");
-		this.settings = 
-			(BuildInvokerProjectSettings)this.projSettings.getSettings(buildType.getProject().getProjectId(), "buildInvokers");
-    	String message = this.settings.getBuildInovokersAsString();
-    	model.put("webHookCount", this.settings.getBuildInvokersCount());
-    	if (this.settings.getBuildInvokersCount() == 0){
-    		model.put("noWebHooks", "true");
-    		model.put("webHooks", "false");
-    	} else {
-    		model.put("noWebHooks", "false");
-    		model.put("webHooks", "true");
-    		model.put("webHookList", this.settings.getBuildsAsList());
-    	}
-    	model.put("messages", message);
-    	model.put("messages2", "blasdflkdfl");
-    	model.put("projectId", buildType.getProject().getProjectId());
-    	model.put("projectName", buildType.getProject().getName());
-	}
-
 	@Override
 	public String getIncludeUrl() {
 		return myPluginPath + "buildTabBuildInvokers.jsp";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void fillModel(Map model, HttpServletRequest request, SBuild sBuild) {
 		this.settings = 
@@ -122,32 +93,18 @@ public class BuildInvokerTabExtension extends ViewLogTab {
         model.put("invokerBuildId", sBuild.getBuildId());
         model.put("invokerBuildTypeId", sBuild.getBuildTypeId());
         model.put("invokerBuildTypeName", sBuild.getBuildTypeName());
+        model.put("invokerBuildNumber", sBuild.getBuildNumber());
     	
         List<BuildInvokerConfig> invokers = settings.findInvokersForBuildType(sBuild.getBuildTypeId());
         for (BuildInvokerConfig invoker : invokers){
-        	//if (server.getProjectManager().findBuildTypeById(invoker.getBuildToInvoke()).getFullName() != null){
-        	//if (invoker.getBuildNameToInvoke() == null){
         	if (server.getProjectManager().findBuildTypeById(invoker.getBuildToInvoke()) != null){
         		invoker.setBuildNameToInvoke(server.getProjectManager().findBuildTypeById(invoker.getBuildToInvoke()).getFullName());
-        		//invoker.setBuildNameToInvoke(invoker.getBuildToInvoke());
         	} else {
         		invoker.setEnabled(false);
         	}
         }
         model.put("invokers", invokers);
-    	model.put("webHookCount", this.settings.getBuildInvokersCount());
-    	if (this.settings.getBuildInvokersCount() == 0){
-    		model.put("noWebHooks", "true");
-    		model.put("webHooks", "false");
-    	} else {
-    		model.put("noWebHooks", "false");
-    		model.put("webHooks", "true");
-    		model.put("webHookList", this.settings.getBuildsAsList());
-    	}
     	model.put("messages", message);
-    	model.put("messages2", "blasdflkdfl");
-    	model.put("projectId", sBuild.getProjectId());
-    	//model.put("projectName", sBuild.getProjectId() getProject().getName());		
 	}
 
 
