@@ -29,7 +29,7 @@ public class InvokerBuild {
 	}
 
 	public Element getAsElement(){
-		Element el = new Element("customParameter");
+		Element el = new Element("invokerBuild");
 		el.setAttribute("invokeFrom", this.buildTypeId);
 		el.setAttribute("displayOrder", String.valueOf(this.displayOrder));
 		el.setAttribute("enabled", String.valueOf(this.enabled));

@@ -1,0 +1,21 @@
+  <buildInvokers enabled="Run Deploy">
+    <buildInvoker buildToInvoke="bt434" invokeBuildButtonText="Deploy">
+      <customParameter invokeFrom="bt423" displayOrder="1" enabled="true" />
+      <customParameter type="artifact" name="artifact" scope="env" />
+      <customParameter type="option" name="copyFileTo" value="dev:uat" scope="env" />
+      <customParameter type="option" name="extractAndUpdateSymlinks" value="yes:no" scope="env" />
+    </buildInvoker>
+    <buildInvoker buildToInvoke="bt434" invokeBuildButtonText="Untar to Dev (does not update symlinks)">
+      <customParameter invokeFrom="bt396" displayOrder="1" enabled="true" />
+      <customParameter invokeFrom="bt400" displayOrder="1" enabled="true" />
+      <customParameter invokeFrom="bt415" displayOrder="1" enabled="true" />
+      <customParameter invokeFrom="bt428" displayOrder="1" enabled="true" />
+      <customParameter invokeFrom="bt401" displayOrder="1" enabled="true" />
+      <customParameter invokeFrom="bt417" displayOrder="1" enabled="true" />
+      <customParameter invokeFrom="bt402" displayOrder="1" enabled="true" />
+      <customParameter invokeFrom="bt433" displayOrder="1" enabled="true" />
+      <customParameter type="hidden" name="copyFileTo" value="dev" scope="env" />
+      <customParameter type="hidden" name="extractAndUpdateSymlinks" value="no" scope="env" />
+      <customParameter type="artifact" name="artifact" scope="env" />
+    </buildInvoker>
+  </buildInvokers>

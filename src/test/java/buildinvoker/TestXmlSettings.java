@@ -57,7 +57,7 @@ public class TestXmlSettings {
 		
 		BuildInvokerProjectSettingsFactory settingsFactory = new BuildInvokerProjectSettingsFactory(this.projectSettingsManager);
 		BuildInvokerProjectSettings settings = settingsFactory.createProjectSettings("project1");
-		settings.readFrom(this.getFullConfigElement());
+		settings.readFrom(this.getFullConfigElement("src/test/resources/plugin-settings-test.xml"));
 		
 		System.out.println(settings.getTabName());
 		
@@ -78,7 +78,7 @@ public class TestXmlSettings {
 			
 			baos.reset();
 			
-			outputter.output(this.getFullConfigElement(), baos);
+			outputter.output(this.getFullConfigElement("src/test/resources/plugin-settings-test.xml"), baos);
 			System.out.println(baos.toString());
 
 			
@@ -87,20 +87,20 @@ public class TestXmlSettings {
 			e1.printStackTrace();
 		}
 
-		//assertEquals(this.getFullConfigElement(),e);
+		//assertEquals(this.getFullConfigElement("src/test/resources/plugin-settings-test.xml"),e);
 	}
 	
 	@Test
 	public void TestGetTabName(){
 		BuildInvokerProjectSettings settings = new BuildInvokerProjectSettings();
-		settings.readFrom(this.getFullConfigElement());
+		settings.readFrom(this.getFullConfigElement("src/test/resources/plugin-settings-test.xml"));
 		assertTrue(settings.getTabName().equals("Run Deploy"));
 	}
 	
 	@Test
-	public void TestBlah(){
+	public void TestXmlLoading01(){
 		BuildInvokerProjectSettings settings = new BuildInvokerProjectSettings();
-		settings.readFrom(this.getFullConfigElement());
+		settings.readFrom(this.getFullConfigElement("src/test/resources/plugin-settings-test.xml"));
 		List<BuildInvokerConfig> configs = settings.findInvokersForBuildType("bt2");
 		System.out.println("configs size: " + configs.size());
 		
@@ -132,13 +132,50 @@ public class TestXmlSettings {
 		
 	}
 
+	@Test
+	public void TestXmlLoading02(){
+		BuildInvokerProjectSettings settings = new BuildInvokerProjectSettings();
+		settings.readFrom(this.getFullConfigElement("src/test/resources/plugin-settings-test-3.xml"));
+		List<BuildInvokerConfig> configs = settings.findInvokersForBuildType("bt434");
+		System.out.println("configs size: " + configs.size());
+		
+		/*
+		assertTrue(configs.get(0).getBuildToInvoke().equals("bt6"));
+		assertTrue(configs.get(1).getBuildToInvoke().equals("bt5"));
+		assertTrue(configs.get(2).getBuildToInvoke().equals("bt4"));
+		assertTrue(configs.get(3).getBuildToInvoke().equals("bt3"));
+		assertTrue(configs.get(4).getBuildToInvoke().equals("bt2"));
+		assertTrue(configs.get(5).getBuildToInvoke().equals("bt1"));
+		assertTrue(configs.size() == 6);
+		*/
+		
+		for (BuildInvokerConfig config : configs){
+			System.out.println("We will be invoking build: " + config.getBuildToInvoke());
+			System.out.println("This build is enabled: " + config.isEnabled().toString());
+			System.out.println("invokeBuildButtonText: " + config.getInvokeBuildButtonText().toString());
+			//System.out.println("This build has a displayOrder of:" config.get);
+			for (CustomParameter cp : config.getOrderedParameterCollection()){
+				System.out.println(cp.getScope() + "." + cp.getName() + ": " + cp.getScope() + "." + cp.getValue() + "(" + cp.getType() + ")");
+			}
+			
+		}
+
+		List<BuildInvokerConfig> configs2 = settings.findInvokersForBuildType("bt434");
+		System.out.println("configs size: " + configs2.size());
+		
+		/*
+		assertTrue(configs2.get(0).getBuildToInvoke().equals("bt1"));
+		assertTrue(configs2.get(1).getBuildToInvoke().equals("bt2"));
+		assertTrue(configs2.size() == 2);
+		*/
+		
+	}	
 	
-	
-	private Element getFullConfigElement(){
+	private Element getFullConfigElement(String filename){
 		SAXBuilder builder = new SAXBuilder();
 		builder.setIgnoringElementContentWhitespace(true);
 		try {
-			Document doc = builder.build("src/test/resources/plugin-settings-test.xml");
+			Document doc = builder.build(filename);
 			return doc.getRootElement();
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
