@@ -70,7 +70,7 @@ public class BuildInvokerProjectSettings implements ProjectSettings {
      * in memory. 
      */
     {
-    	parentElement.setAttribute("enabled", String.valueOf(this.tabName));
+    	parentElement.setAttribute("tabName", String.valueOf(this.tabName));
     	Loggers.SERVER.debug(this.getClass().getName() + ":writeTo :: " + parentElement.toString());
         if(buildInvokerConfigs != null)
         {
