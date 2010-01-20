@@ -28,8 +28,9 @@ import org.jetbrains.annotations.NotNull;
 import buildinvoker.Artifact;
 import buildinvoker.ArtifactListBuilder;
 import buildinvoker.BuildInvokerConfig;
+import buildinvoker.CustomParameter;
 import buildinvoker.settings.BuildInvokerProjectSettings;
-
+import static buildinvoker.ArtifactFilterer.filterArtifactList;;
 
 
 public class BuildInvokerTabExtension extends ViewLogTab {
@@ -75,7 +76,7 @@ public class BuildInvokerTabExtension extends ViewLogTab {
     	String message = this.settings.getBuildInovokersAsString();
     	model.put("jspHome",myPluginPath);
     	
-    	List<Artifact> artifacts = new ArrayList<Artifact>();
+    	ArrayList<Artifact> artifacts = new ArrayList<Artifact>();
     	
     	File artPath = new File(server.getArtifactsDirectory() + File.separator + server.getProjectManager().findProjectById(sBuild.getProjectId()).getName() + File.separator  + sBuild.getBuildTypeName() + File.separator + String.valueOf(sBuild.getBuildId()) + File.separator);
     	try {
@@ -86,7 +87,7 @@ public class BuildInvokerTabExtension extends ViewLogTab {
     	
         SUser myUser = SessionUser.getUser(request);
         
-        model.put("artifacts", artifacts);
+        //model.put("artifacts", artifacts);
         model.put("artifactsSize", artifacts.size());
         model.put("hasPermission", myUser.isPermissionGrantedForProject(sBuild.getProjectId(), Permission.RUN_BUILD));
         
@@ -101,6 +102,11 @@ public class BuildInvokerTabExtension extends ViewLogTab {
         	if (server.getProjectManager().findBuildTypeById(invoker.getBuildToInvoke()) != null){
         		invoker.setBuildNameToInvoke(server.getProjectManager().findBuildTypeById(invoker.getBuildToInvoke()).getFullName());
         		enabledCount++;
+        		for (CustomParameter cust : invoker.getOrderedParameterCollection()){
+        			if (cust.getIsArtifact()){
+        				cust.setFilteredArtifacts(filterArtifactList(artifacts, cust.getFilter()));
+        			}
+        		}
         	} else {
         		invoker.setEnabled(false);
         	}

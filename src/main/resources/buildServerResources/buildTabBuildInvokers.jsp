@@ -1,5 +1,4 @@
 <%@ include file="/include.jsp" %>
-<%@ page import="jetbrains.buildServer.web.ArtifactsTreePrinter"%>
 
 <c:if test="not ${hasPermission}" >
 
@@ -9,16 +8,20 @@
 
 <c:if test="${hasPermission}" >
 			<script type="text/javascript" src=".${jspHome}js/jquery-1.3.2.min.js"></script>
+			<script type="text/javascript" src=".${jspHome}js/buildInvokerAjax.js"></script>
+			<script type="text/javascript" src=".${jspHome}js/jquery.validate.pack.js"></script>
 			<script type="text/javascript">
 				jQuery.noConflict();
 				jQuery(document).ready( function() {
 					jQuery("td.hiddenParam").hide();
+					jQuery("#log").hide();
 				});
 
 				function toggleHiddenParams(formID){
 					jQuery('div#invokerDiv' + formID + ' td.hiddenParam').toggle();
 				}
 			</script>
+			<div id="log" style="background-color:#FFFFCC; padding: 1em 1em 1em 1em; border: solid 1px #ccc; margin:1em; width:60%;"></div>
 			<c:if test="${invokersSize == 0}" >
 		  		<p style="padding:1em;">There are no builds to display. Perhaps your plugin-settings.xml references a <em>buildToInvoke</em> that no longer exists.</p>
 		  	</c:if>
@@ -27,12 +30,8 @@
 				<c:if test="${invoker.enabled}">
 				<div id="invokerDiv${invoker.uniqueKey}" style="background-color:#F5F5F5; padding: 0.5em 1em 1em 1em; border: solid 1px #ccc; margin:1em; width:60%;">
 				<jsp:useBean id="invoker" type="buildinvoker.BuildInvokerConfig"/>
-			  	 <form method="get" action="action.html">
+			  	 <form method="get" id="form${invoker.uniqueKey}" class="validateForm" action="action.html">
 			  	 	<input type="hidden" name="add2Queue" value="${invoker.buildToInvoke}" />
-			  	  	<input type="hidden" name="env.name" value="testname1" />
-			  	  	<input type="hidden" name="env.value" value="testvalue1" />
-			  	  	<input type="hidden" name="env.name" value="testname2" />
-			  	  	<input type="hidden" name="env.value" value="testvalue2" />
 	
 					<p>Build : <span style="font-weight:bold;">${invoker.buildNameToInvoke}</span>
 					<span style="float:right;text-decoration:underline;cursor:pointer;" onclick="toggleHiddenParams(${invoker.uniqueKey});"> show/hide extra parameters </span></p>
@@ -41,14 +40,14 @@
 			  	  	<c:forEach items="${invoker.orderedParameterCollection}" var="parameter">
 			  	  	<jsp:useBean id="parameter" type="buildinvoker.CustomParameter"/>
 			  	  		<c:if test="${parameter.isArtifact}" >
-			  	  			<c:if test="${artifactsSize > 0}" >
+			  	  			<c:if test="${parameter.filteredArtifactsSize > 0}" >
 				  	  			${parameter.artifactStartAsHtml}
-								<c:forEach items="${artifacts}" var="artifact">
+								<c:forEach items="${parameter.filteredArtifacts}" var="artifact">
 									<option value="${artifact.fullName}">${artifact.fullName} (${artifact.sizeHumanReadable})</option>
 								</c:forEach>
 								${parameter.artifactEndAsHtml}
 							</c:if>
-							<c:if test="${artifactsSize == 0}" >
+							<c:if test="${parameter.filteredArtifactsSize == 0}" >
 								${parameter.noArtifactsAsHtml}
 							</c:if>
 						</c:if>
@@ -74,7 +73,7 @@
 			  	  	<tr><td class="hiddenParam">env.buildNumberInvokedFrom</td><td class="hiddenParam">${invokerBuildNumber}</td></tr>
 			  	  	
 			  		<tr>
-			  			<td colspan=2 style="text-align:right;"><input type="submit" value="${invoker.invokeBuildButtonText}" /></td>
+			  			<td colspan=2 style="text-align:right;"><input onclick="javascript:submitForm('${invoker.uniqueKey}','${invoker.buildToInvoke}','${invoker.buildNameToInvoke}');" type="button" value="${invoker.invokeBuildButtonText}" /></td>
 			  		</tr>
 			  		</table>
 			  		</form>

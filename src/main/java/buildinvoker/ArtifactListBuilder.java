@@ -44,9 +44,9 @@ public final class ArtifactListBuilder {
     return result;
   }
 
-  static public List<Artifact> getArtifactFilesWithSizeAndWithoutPrefix(File aStartingDir) throws FileNotFoundException{
+  static public ArrayList<Artifact> getArtifactFilesWithSizeAndWithoutPrefix(File aStartingDir) throws FileNotFoundException{
 	  validateDirectory(aStartingDir);
-	  List<Artifact>  artifacts = new ArrayList<Artifact>();
+	  ArrayList<Artifact>  artifacts = new ArrayList<Artifact>();
 	  for (File file : getFileListingNoSort(aStartingDir)){
 		  if (file.isFile()){
 			  artifacts.add(new Artifact(file,aStartingDir));

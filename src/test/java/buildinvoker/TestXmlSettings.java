@@ -1,7 +1,6 @@
 package buildinvoker;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,6 +12,7 @@ import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.SBuildType;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 
+import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -71,15 +71,22 @@ public class TestXmlSettings {
 
 		org.jdom.output.XMLOutputter outputter = new org.jdom.output.XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
+		
+		String x1="foo", x2="bar";
 
 		try {
 			outputter.output(d, baos);
+			System.out.println("writeTo::");
 			System.out.println(baos.toString());
+			x1 = baos.toString();
 			
 			baos.reset();
-			
+			//baos.
 			outputter.output(this.getFullConfigElement("src/test/resources/plugin-settings-test.xml"), baos);
+						System.out.println("fromFile::");
 			System.out.println(baos.toString());
+			x2 = baos.toString();
+			
 
 			
 		} catch (IOException e1) {
@@ -88,6 +95,7 @@ public class TestXmlSettings {
 		}
 
 		//assertEquals(this.getFullConfigElement("src/test/resources/plugin-settings-test.xml"),e);
+		//assertTrue(x1.equals(x2));
 	}
 	
 	@Test
@@ -136,7 +144,7 @@ public class TestXmlSettings {
 	public void TestXmlLoading02(){
 		BuildInvokerProjectSettings settings = new BuildInvokerProjectSettings();
 		settings.readFrom(this.getFullConfigElement("src/test/resources/plugin-settings-test-3.xml"));
-		List<BuildInvokerConfig> configs = settings.findInvokersForBuildType("bt434");
+		List<BuildInvokerConfig> configs = settings.findInvokersForBuildType("bt433");
 		System.out.println("configs size: " + configs.size());
 		
 		/*
@@ -155,13 +163,41 @@ public class TestXmlSettings {
 			System.out.println("invokeBuildButtonText: " + config.getInvokeBuildButtonText().toString());
 			//System.out.println("This build has a displayOrder of:" config.get);
 			for (CustomParameter cp : config.getOrderedParameterCollection()){
-				System.out.println(cp.getScope() + "." + cp.getName() + ": " + cp.getScope() + "." + cp.getValue() + "(" + cp.getType() + ")");
+				System.out.println(cp.getScope() + "." + cp.getName() + ": " 
+						+ cp.getScope() + "." + cp.getValue() 
+						+ "(" + cp.getType() + ") :: default: " 
+						+ cp.getDefaultValue() + " :: filter: " + cp.getFilter());
 			}
 			
 		}
 
-		List<BuildInvokerConfig> configs2 = settings.findInvokersForBuildType("bt434");
+		// <customParameter type="hidden" name="copyFileTo" value="dev" scope="env" filter="tar"/>
+		System.out.println(configs.get(0).getOrderedParameterCollection().get(0).getAsHtml());
+		assertNull(configs.get(0).getOrderedParameterCollection().get(0).getDefaultValue());
+		assertNull(configs.get(0).getOrderedParameterCollection().get(0).getFilter());
+		
+		
+		// <customParameter type="option" name="extractAndUpdateSymlinks" value="yes:no" scope="env" default="no" />
+		System.out.println(configs.get(0).getOrderedParameterCollection().get(1).getAsHtml());
+		assertTrue(configs.get(0).getOrderedParameterCollection().get(1).getDefaultValue().equals("no"));
+		assertNull(configs.get(0).getOrderedParameterCollection().get(1).getFilter());
+
+		
+		// <customParameter type="artifact" name="artifact1" scope="env" filter=".+\.tar\.gz$" />
+		System.out.println(configs.get(0).getOrderedParameterCollection().get(2).getAsHtml());
+		assertNull(configs.get(0).getOrderedParameterCollection().get(2).getDefaultValue());
+		assertTrue(configs.get(0).getOrderedParameterCollection().get(2).getFilter().equals(".+\\.tar\\.gz$"));
+		
+
+		// <customParameter type="artifact" name="artifact2" scope="env" filter="tar" default="123456" />
+		System.out.println(configs.get(0).getOrderedParameterCollection().get(3).getAsHtml());
+		assertNull(configs.get(0).getOrderedParameterCollection().get(3).getDefaultValue());
+		assertTrue(configs.get(0).getOrderedParameterCollection().get(3).getFilter().equals("tar"));
+		
+		
+		List<BuildInvokerConfig> configs2 = settings.findInvokersForBuildType("bt433");
 		System.out.println("configs size: " + configs2.size());
+		
 		
 		/*
 		assertTrue(configs2.get(0).getBuildToInvoke().equals("bt1"));

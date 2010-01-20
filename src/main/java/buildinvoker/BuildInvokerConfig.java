@@ -58,18 +58,30 @@ public class BuildInvokerConfig {
 	      <customParameter type="option" name="deployTo" value="dev:uat:integration" scope="env"/>
 		*/
 		
-		List<Element> customParameterList = e.getChildren("customParameter");
-		if (customParameterList.size() > 0){
-			for(Element customParameter : customParameterList)
+		List<Element> customParameterElementList = e.getChildren("customParameter");
+		if (customParameterElementList.size() > 0){
+			for(Element paramElement : customParameterElementList)
 			{
-				this.orderedParameterCollection.add(
+				CustomParameter customParameter = 
 						new CustomParameter(
-								customParameter.getAttributeValue("type"),
-								customParameter.getAttributeValue("name"),
-								customParameter.getAttributeValue("value"),
-								customParameter.getAttributeValue("scope")
-								)
-						);
+								paramElement.getAttributeValue("type"),
+								paramElement.getAttributeValue("name"),
+								paramElement.getAttributeValue("value"),
+								paramElement.getAttributeValue("scope")
+							);
+				if (paramElement.getAttribute("filter") != null){
+					customParameter.setFilter(paramElement.getAttributeValue("filter"));
+				}
+				if (paramElement.getAttribute("default") != null){
+					customParameter.setDefaultValue(paramElement.getAttributeValue("default"));
+				}
+				if (paramElement.getAttribute("description") != null){
+					customParameter.setDescription(paramElement.getAttributeValue("description"));
+				}				
+				if (paramElement.getAttribute("required") != null){
+					customParameter.setRequired(Boolean.parseBoolean(paramElement.getAttributeValue("required")));
+				}				
+				this.orderedParameterCollection.add(customParameter);
 			}
 		}
 		
