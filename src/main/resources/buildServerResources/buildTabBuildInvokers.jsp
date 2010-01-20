@@ -8,8 +8,8 @@
 
 <c:if test="${hasPermission}" >
 			<script type="text/javascript" src=".${jspHome}js/jquery-1.3.2.min.js"></script>
+			<script type="text/javascript" src=".${jspHome}js/jquery.validate.js"></script>
 			<script type="text/javascript" src=".${jspHome}js/buildInvokerAjax.js"></script>
-			<script type="text/javascript" src=".${jspHome}js/jquery.validate.pack.js"></script>
 			<script type="text/javascript">
 				jQuery.noConflict();
 				jQuery(document).ready( function() {
@@ -21,7 +21,7 @@
 					jQuery('div#invokerDiv' + formID + ' td.hiddenParam').toggle();
 				}
 			</script>
-			<div id="log" style="background-color:#FFFFCC; padding: 1em 1em 1em 1em; border: solid 1px #ccc; margin:1em; width:60%;"></div>
+			<div id="log" style="background-color:#FFFFCC; padding: 1em 1em 1em 1em; border: solid 1px #ccc; margin:1em; width:60%;"><img src='img/ajax-loader.gif' align=bottom width='16' height='16' /></div>
 			<c:if test="${invokersSize == 0}" >
 		  		<p style="padding:1em;">There are no builds to display. Perhaps your plugin-settings.xml references a <em>buildToInvoke</em> that no longer exists.</p>
 		  	</c:if>

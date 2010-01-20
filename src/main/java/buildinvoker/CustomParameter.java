@@ -9,13 +9,15 @@ public class CustomParameter {
 	
 	String type, name, value, scope, defaultValue, filter, description;
 	Boolean required;
+	String uniqueKey;
 	ArrayList<Artifact> filteredArtifactList = null;
 	
-	public CustomParameter(String type, String name, String value, String scope){
+	public CustomParameter(String type, String name, String value, String scope, String uniqueKey){
 		this.type  = type;
 		this.name  = name;
 		this.value = value;
 		this.scope = scope;
+		this.uniqueKey = uniqueKey;
 	}
 
 	public String getType() {
@@ -95,7 +97,7 @@ public class CustomParameter {
 			} else {
 				s.append("<tr><td>" + this.scope + "." + this.name + "</td>");
 			}
-			s.append("<td><select name=\"" + this.scope + ".value\"");
+			s.append("<td><select id=\"" + this.uniqueKey + this.name + "\" name=\"" + this.scope + ".value\"");
 			if (this.required != null && this.required)
 				s.append(" class=\"required\" ");
 			s.append(">");
@@ -121,7 +123,7 @@ public class CustomParameter {
 			} else {
 				s.append("<tr><td>" + this.scope + "." + this.name + "</td>");
 			}
-			s.append("<td><select name=\"" + this.scope + ".value\"");
+			s.append("<td><select id=\"" + this.uniqueKey + this.name + "\" name=\"" + this.scope + ".value\"");
 			if (this.required != null && this.required)
 				s.append(" class=\"required\" ");
 			s.append(">");

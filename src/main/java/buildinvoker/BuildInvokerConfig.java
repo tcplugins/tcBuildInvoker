@@ -67,7 +67,8 @@ public class BuildInvokerConfig {
 								paramElement.getAttributeValue("type"),
 								paramElement.getAttributeValue("name"),
 								paramElement.getAttributeValue("value"),
-								paramElement.getAttributeValue("scope")
+								paramElement.getAttributeValue("scope"),
+								this.uniqueKey
 							);
 				if (paramElement.getAttribute("filter") != null){
 					customParameter.setFilter(paramElement.getAttributeValue("filter"));
