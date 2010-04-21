@@ -52,14 +52,18 @@ public class BuildInvokerTabExtension extends ViewLogTab {
 	}
 
 	public boolean isAvailable(@NotNull HttpServletRequest request) {
-		this.settings = 
-			(BuildInvokerProjectSettings)this.projSettings.getSettings(this.server.findBuildInstanceById(Long.parseLong(request.getParameter("buildId"))).getProjectId(), "buildInvokers");
-			
-		if (this.server.findBuildInstanceById(Long.parseLong(request.getParameter("buildId"))).isFinished() 
-			&& settings.findInvokersForBuildType(request.getParameter("buildTypeId")).size() > 0){
-			this.setTabTitle(settings.getTabName());
-			return true;
-		} 
+		try{
+			this.settings = 
+				(BuildInvokerProjectSettings)this.projSettings.getSettings(this.server.findBuildInstanceById(Long.parseLong(request.getParameter("buildId"))).getProjectId(), "buildInvokers");
+				
+			if (this.server.findBuildInstanceById(Long.parseLong(request.getParameter("buildId"))).isFinished() 
+				&& settings.findInvokersForBuildType(request.getParameter("buildTypeId")).size() > 0){
+				this.setTabTitle(settings.getTabName());
+				return true;
+			} 
+		} catch (NumberFormatException nfe){
+			return false;
+		}
 		return false;
 	}
 
