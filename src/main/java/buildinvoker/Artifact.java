@@ -10,7 +10,7 @@ public class Artifact {
 	String SizeHumanReadable;
 
 	public Artifact(File file, File startingDir){
-		this.FullName = file.getPath().replace(startingDir.getPath(), "");
+		this.FullName = file.getPath().replace(startingDir.getPath(), "").replace("\\", "/");
 		if (this.FullName.startsWith("/"))
 			this.FullName = this.FullName.substring(1); 
 		this.SizeHumanReadable = StringUtil.formatFileSize(file.length());
