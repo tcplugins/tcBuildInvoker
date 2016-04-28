@@ -1,7 +1,7 @@
 package buildinvoker.settings;
 
 
-import jetbrains.buildServer.log.Loggers;
+import buildinvoker.Loggers;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsFactory;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 
@@ -12,6 +12,7 @@ public class BuildInvokerProjectSettingsFactory implements ProjectSettingsFactor
 		projectSettingsManager.registerSettingsFactory("buildInvokers", this);
 	}
 
+	@Override
 	public BuildInvokerProjectSettings createProjectSettings(String projectId) {
 		Loggers.SERVER.info("BuildInvokerProjectSettingsFactory: re-reading settings for " + projectId);
 		BuildInvokerProjectSettings bis = new BuildInvokerProjectSettings();

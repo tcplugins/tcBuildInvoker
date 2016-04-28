@@ -18,6 +18,7 @@ public class CustomParameter {
 		this.value = value;
 		this.scope = scope;
 		this.uniqueKey = uniqueKey;
+		Loggers.SERVER.debug("tcBuildInvoker_CustomParameter: type: " + type + "  name: " + name + "  value: " + value + "  scope: " + scope);
 	}
 
 	public String getType() {

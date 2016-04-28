@@ -7,7 +7,6 @@
 </c:if>
 
 <c:if test="${hasPermission}" >
-			<script type="text/javascript" src=".${jspHome}js/jquery-1.3.2.min.js"></script>
 			<script type="text/javascript" src=".${jspHome}js/jquery.validate.js"></script>
 			<script type="text/javascript" src=".${jspHome}js/buildInvokerAjax.js"></script>
 			<script type="text/javascript">

@@ -3,8 +3,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>netwolfuk.TeamCity.Plugins</groupId>
 	<artifactId>tcBuildInvoker</artifactId>
-	<version>0.5.${build.number}.${build.vcs.number}</version>
+	
+	<properties>
+    	<majorVersion>0.9</majorVersion>
+    	<minorVersion>snapshot</minorVersion>
+    	<currentVersion>${majorVersion}.${minorVersion}</currentVersion>
+    	<!-- Set the TeamCity version, so that we reference these jars in Maven -->
+    	<teamcityVersion>9.1.6</teamcityVersion>
+	</properties>
+		
+	<version>${currentVersion}</version>
 	<name>tcBuildInvoker - Invoke a Custom build from the TeamCity UI</name>
+	<description>Invoke a Custom build from the TeamCity UI</description>
+	
 	<build>
 		<defaultGoal>package</defaultGoal>
 		
@@ -55,8 +66,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		    <plugin>
@@ -140,12 +151,29 @@
 	</reporting>
 	
 	<repositories>
-	 <repository>
-      <id>tcwebhooks.sourceforge</id>
-      <url>http://tcplugins.svn.sourceforge.net/svnroot/tcplugins/maven2-repo</url>
-     </repository>
+ 	  <repository>
+	    <id>jetbrains-all</id>
+	    <url>http://repository.jetbrains.com/all</url>
+	  </repository>
 	</repositories>
+	
 	<dependencies>
+
+		<!-- TeamCity/webapps/WEB-INF/lib/server-api.jar -->
+		<dependency>
+			<groupId>org.jetbrains.teamcity</groupId>
+			<artifactId>server-api</artifactId>
+			<version>${teamcityVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jetbrains.teamcity</groupId>
+			<artifactId>common-api</artifactId>
+			<version>${teamcityVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -188,124 +216,7 @@
   		</dependency>
   		 
 	</dependencies>
-	
-	<profiles>
-		<profile>
-			<id>tc-default</id>
-			<activation>
-      			<activeByDefault>true</activeByDefault>
-    		</activation>
-			<dependencies>	
-					<!-- TeamCity/webapps/WEB-INF/lib/server-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>server-api</artifactId>
-						<version>4.0.2</version>
-						<scope>provided</scope>
-					</dependency>
-			
-					<!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>common-api</artifactId>
-						<version>4.0.2</version>
-						<scope>provided</scope>
-					</dependency>
-			
-					<!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>artefacts</artifactId>
-						<version>4.0.2</version>
-						<scope>provided</scope>
-					</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>tc-4.0.2</id>
-			<dependencies>	
-					<!-- TeamCity/webapps/WEB-INF/lib/server-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>server-api</artifactId>
-						<version>4.0.2</version>
-						<scope>provided</scope>
-					</dependency>
-			
-					<!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>common-api</artifactId>
-						<version>4.0.2</version>
-						<scope>provided</scope>
-					</dependency>
-			
-					<!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>artefacts</artifactId>
-						<version>4.0.2</version>
-						<scope>provided</scope>
-					</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>tc-4.5.3</id>
-			<dependencies>	
-					<!-- TeamCity/webapps/WEB-INF/lib/server-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>server-api</artifactId>
-						<version>4.5.3</version>
-						<scope>provided</scope>
-					</dependency>
-			
-					<!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>common-api</artifactId>
-						<version>4.5.3</version>
-						<scope>provided</scope>
-					</dependency>
-			
-					<!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>artefacts</artifactId>
-						<version>4.5.3</version>
-						<scope>provided</scope>
-					</dependency>
-			</dependencies>
-		</profile>		
-		<profile>
-			<id>tc-4.5.4</id>
-			<dependencies>	
-					<!-- TeamCity/webapps/WEB-INF/lib/server-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>server-api</artifactId>
-						<version>4.5.4</version>
-						<scope>provided</scope>
-					</dependency>
-			
-					<!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>common-api</artifactId>
-						<version>4.5.4</version>
-						<scope>provided</scope>
-					</dependency>
-			
-					<!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
-					<dependency>
-						<groupId>com.jetbrains.teamcity</groupId>
-						<artifactId>artefacts</artifactId>
-						<version>4.5.4</version>
-						<scope>provided</scope>
-					</dependency>
-			</dependencies>
-		</profile>	
-	</profiles>	
+
 
 	<developers>
 		<developer>

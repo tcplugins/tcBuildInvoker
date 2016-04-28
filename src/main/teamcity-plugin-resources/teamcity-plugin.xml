@@ -7,5 +7,5 @@
     <version>${version}</version>
     <description>Adds a tab to build results page allowing you to run a pre-configured build based on values from the current build</description>
   </info>
-  <deployment use-separate-classloader="false"/>
+  <deployment use-separate-classloader="true"/>
 </teamcity-plugin>

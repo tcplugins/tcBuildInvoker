@@ -7,20 +7,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import jetbrains.buildServer.log.Loggers;
 import jetbrains.buildServer.serverSide.settings.ProjectSettings;
-import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 
 import org.jdom.Element;
 
 import buildinvoker.BuildInvokerConfig;
 import buildinvoker.InvokerBuild;
 import buildinvoker.InvokerBuildRankingComparator;
+import buildinvoker.Loggers;
 
 public class BuildInvokerProjectSettings implements ProjectSettings {
-	ProjectSettingsManager psm;
-	ProjectSettings ps;
-	private Boolean updateSucess = false;
 	private String tabName = "Invoke Build";
 	private CopyOnWriteArrayList<BuildInvokerConfig> buildInvokerConfigs;
 	
@@ -28,13 +24,13 @@ public class BuildInvokerProjectSettings implements ProjectSettings {
 		buildInvokerConfigs = new CopyOnWriteArrayList<BuildInvokerConfig>();
 	}
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") @Override
 	public void readFrom(Element rootElement)
     /* Is passed an Element by TC, and is expected to persist it to the settings object.
      * Old settings should be overwritten.
      */
     {
-    	Loggers.SERVER.debug("readFrom :: " + rootElement.toString());
+    	Loggers.SERVER.debug(this.getClass().getName() + ":readFrom :: " + rootElement.toString());
     	CopyOnWriteArrayList<BuildInvokerConfig> configs = new CopyOnWriteArrayList<BuildInvokerConfig>();
     	
     	if (rootElement.getAttribute("tabName") != null){
@@ -65,6 +61,7 @@ public class BuildInvokerProjectSettings implements ProjectSettings {
     	}
     }
 
+    @Override
     public void writeTo(Element parentElement)
     /* Is passed an (probably empty) Element by TC, which is expected to be populated from the settings
      * in memory. 
@@ -87,25 +84,9 @@ public class BuildInvokerProjectSettings implements ProjectSettings {
 
         }
     }
-    
-    public List<BuildInvokerConfig> getBuildsAsList(){
-    	return this.buildInvokerConfigs;
-    }    
-	
-    public Boolean updateSuccessful(){
-    	return this.updateSucess;
-    }
-    
+  
 	public void dispose() {
 		Loggers.SERVER.debug(this.getClass().getName() + ":dispose() called");
-	}
-
-	public Integer getBuildInvokersCount(){
-		return this.buildInvokerConfigs.size();
-	}
-	
-	public List<BuildInvokerConfig> getWebHooksConfigs() {
-		return buildInvokerConfigs;
 	}
 
 	public String getTabName() {

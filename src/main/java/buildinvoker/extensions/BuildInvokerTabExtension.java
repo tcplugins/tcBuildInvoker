@@ -14,6 +14,7 @@ import jetbrains.buildServer.log.Loggers;
 import jetbrains.buildServer.serverSide.ProjectManager;
 import jetbrains.buildServer.serverSide.SBuild;
 import jetbrains.buildServer.serverSide.SBuildServer;
+import jetbrains.buildServer.serverSide.SBuildType;
 import jetbrains.buildServer.serverSide.auth.Permission;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 import jetbrains.buildServer.users.SUser;
@@ -52,12 +53,16 @@ public class BuildInvokerTabExtension extends ViewLogTab {
 	}
 
 	public boolean isAvailable(@NotNull HttpServletRequest request) {
+//		if (request != null) {
+//			return true;
+//		}
 		try{
 			this.settings = 
 				(BuildInvokerProjectSettings)this.projSettings.getSettings(this.server.findBuildInstanceById(Long.parseLong(request.getParameter("buildId"))).getProjectId(), "buildInvokers");
 				
-			if (this.server.findBuildInstanceById(Long.parseLong(request.getParameter("buildId"))).isFinished() 
-				&& settings.findInvokersForBuildType(request.getParameter("buildTypeId")).size() > 0){
+			SBuild thisBuild = this.server.findBuildInstanceById(Long.parseLong(request.getParameter("buildId")));
+			if (thisBuild != null && thisBuild.isFinished() 
+				&& settings.findInvokersForBuildType(thisBuild.getBuildTypeExternalId()).size() > 0){
 				this.setTabTitle(settings.getTabName());
 				return true;
 			} 
@@ -82,7 +87,8 @@ public class BuildInvokerTabExtension extends ViewLogTab {
     	
     	ArrayList<Artifact> artifacts = new ArrayList<Artifact>();
     	
-    	File artPath = new File(server.getArtifactsDirectory() + File.separator + server.getProjectManager().findProjectById(sBuild.getProjectId()).getName() + File.separator  + sBuild.getBuildTypeName() + File.separator + String.valueOf(sBuild.getBuildId()) + File.separator);
+    	//File artPath = new File(sBuild.getArtifactsDirectory() + File.separator + server.getProjectManager().findProjectById(sBuild.getProjectId()).getName() + File.separator  + sBuild.getBuildTypeName() + File.separator + String.valueOf(sBuild.getBuildId()) + File.separator);
+    	File artPath = sBuild.getArtifactsDirectory();
     	try {
 			artifacts = ArtifactListBuilder.getArtifactFilesWithSizeAndWithoutPrefix(artPath);
 		} catch (FileNotFoundException e) {
@@ -101,10 +107,10 @@ public class BuildInvokerTabExtension extends ViewLogTab {
         model.put("invokerBuildNumber", sBuild.getBuildNumber());
     	
         int enabledCount = 0;
-        List<BuildInvokerConfig> invokers = settings.findInvokersForBuildType(sBuild.getBuildTypeId());
+        List<BuildInvokerConfig> invokers = settings.findInvokersForBuildType(sBuild.getBuildTypeExternalId());
         for (BuildInvokerConfig invoker : invokers){
-        	if (server.getProjectManager().findBuildTypeById(invoker.getBuildToInvoke()) != null){
-        		invoker.setBuildNameToInvoke(server.getProjectManager().findBuildTypeById(invoker.getBuildToInvoke()).getFullName());
+        	if (server.getProjectManager().findBuildTypeByExternalId(invoker.getBuildToInvoke()) != null){
+        		invoker.setBuildNameToInvoke(server.getProjectManager().findBuildTypeByExternalId(invoker.getBuildToInvoke()).getFullName());
         		enabledCount++;
         		for (CustomParameter cust : invoker.getOrderedParameterCollection()){
         			if (cust.getIsArtifact()){
