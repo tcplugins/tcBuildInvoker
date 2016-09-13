@@ -100,7 +100,7 @@ public class CustomParameter {
 			}
 			s.append("<td><select id=\"" + this.uniqueKey + this.name + "\" name=\"" + this.scope + ".value\"");
 			if (this.required != null && this.required)
-				s.append(" class=\"required\" ");
+				s.append(" required ");
 			s.append(">");
 			s.append("<option value=\"\">Choose...</option>");
 			for (String str : this.value.split(":")){
@@ -126,7 +126,7 @@ public class CustomParameter {
 			}
 			s.append("<td><select id=\"" + this.uniqueKey + this.name + "\" name=\"" + this.scope + ".value\"");
 			if (this.required != null && this.required)
-				s.append(" class=\"required\" ");
+				s.append(" required ");
 			s.append(">");
 			s.append("<option value=\"\">Choose...</option>");
 		return s.toString();
