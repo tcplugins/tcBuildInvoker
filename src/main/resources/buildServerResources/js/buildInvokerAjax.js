@@ -11,12 +11,8 @@ jQueryBuildInvoker(document).ajaxError(function(){
 
 function submitForm(formId, buildNumber, buildName) {
 	if (jQueryBuildInvoker("#form" + formId).valid()){
-		var str = jQuery(formId).serialize();
 		jQueryBuildInvoker("#log").show().html("<img src='img/ajax-loader.gif' align=bottom width='16' height='16' /> Build request submitted");
-//		jQueryBuildInvoker.post("buildInvoker/action.html?action=invokeBuild&" + jQuery("#form" + formId).serialize(), {}, function(){
-//			jQueryBuildInvoker("#log").show().html("<b>Build request sent for <a href='viewType.html?buildTypeId=" + buildNumber + "&tab=buildTypeStatusDiv'>" + buildName + "</a></b>");
-//			
-//		});
+
 		var parameters = jQueryBuildInvoker("#form" + formId).serializeArray();
 		var jsonPayload = {};
 		jsonPayload.buildTypeId = buildNumber;
@@ -26,7 +22,6 @@ function submitForm(formId, buildNumber, buildName) {
 		jsonPayload.properties.property = parameters;
 		var data = JSON.stringify(jsonPayload);
 
-		console.log(data);
 		jQueryBuildInvoker.ajax({
 			  url:"app/rest/buildQueue",
 			  type:"POST",
@@ -38,7 +33,6 @@ function submitForm(formId, buildNumber, buildName) {
 				  jQueryBuildInvoker("#log").show().html("<b>Build request sent for <a href='viewType.html?buildTypeId=" + buildNumber + "&tab=buildTypeStatusDiv'>" + buildName + "</a></b>");
 			  },
 			  error: function(error){
-				  console.log(error);
 				  jQueryBuildInvoker("#log").show().html("<b>An error occured while sending the build queue request to the TeamCity REST API.</b><br><dl><dt><b>" + error.statusText + "</b> (HTTP Status " + error.status + ")</dt><dd>" + error.responseText + "</dd></dl>");
 			  }
 			});
