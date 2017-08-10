@@ -30,8 +30,6 @@
 				<div id="invokerDiv${invoker.uniqueKey}" style="background-color:#F5F5F5; padding: 0.5em 1em 1em 1em; border: solid 1px #ccc; margin:1em; width:60%;">
 				<jsp:useBean id="invoker" type="buildinvoker.BuildInvokerConfig"/>
 			  	 <form method="get" id="form${invoker.uniqueKey}" class="validateForm" action="action.html">
-			  	 	<input type="hidden" name="add2Queue" value="${invoker.buildToInvoke}" />
-	
 					<p>Build : <span style="font-weight:bold;">${invoker.buildNameToInvoke}</span>
 					<span style="float:right;text-decoration:underline;cursor:pointer;" onclick="toggleHiddenParams(${invoker.uniqueKey});"> show/hide extra parameters </span></p>
 			  	  	<table class="projectTable" style="background-color: white;">
@@ -55,20 +53,16 @@
 				  	  	</c:if>
 			  	  	</c:forEach>
 	
-			  	  	<input type="hidden" name="env.name" value="buildIdToInvoke" />
-			  	  	<input type="hidden" name="env.value" value="${invoker.buildToInvoke}" />
+			  	  	<input type="hidden" name="buildIdToInvoke" value="${invoker.buildToInvoke}" />
 			  	  	<tr><td class="hiddenParam">env.buildIdToInvoke</td><td class="hiddenParam">${invoker.buildToInvoke}</td></tr>
 	
-			  	  	<input type="hidden" name="env.name" value="buildIdInvokedFrom" />
-			  	  	<input type="hidden" name="env.value" value="${invokerBuildTypeId}" />		  	  	
+			  	  	<input type="hidden" name="buildIdInvokedFrom" value="${invokerBuildTypeId}" />		  	  	
 			  	  	<tr><td class="hiddenParam">env.buildIdInvokedFrom</td><td class="hiddenParam">${invokerBuildTypeId}</td></tr>
 	
-			  	  	<input type="hidden" name="env.name" value="buildInvokedFrom" />
-			  	  	<input type="hidden" name="env.value" value="${invokerBuildId}" />		  	  	
+			  	  	<input type="hidden" name="buildInvokedFrom" value="${invokerBuildId}" />		  	  	
 			  	  	<tr><td class="hiddenParam">env.buildInvokedFrom</td><td class="hiddenParam">${invokerBuildId}</td></tr>
 	
-			  	  	<input type="hidden" name="env.name" value="buildNumberInvokedFrom" />
-			  	  	<input type="hidden" name="env.value" value="${invokerBuildNumber}" />		  	  	
+			  	  	<input type="hidden" name="buildNumberInvokedFrom" value="${invokerBuildNumber}" />		  	  	
 			  	  	<tr><td class="hiddenParam">env.buildNumberInvokedFrom</td><td class="hiddenParam">${invokerBuildNumber}</td></tr>
 			  	  	
 			  		<tr>

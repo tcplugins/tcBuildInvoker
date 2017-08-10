@@ -7,22 +7,7 @@
         class="buildinvoker.extensions.BuildInvokerTabExtension"
         init-method="register" 
         />
- <!-- 
-    <bean id="webHookIndexPageController" 
-     	class="webhook.teamcity.extension.WebHookIndexPageController" 
-     	init-method="register" 
-     	/>
-
-     <bean id="webHookAjaxSettingsListPageController" 
-     	class="webhook.teamcity.extension.WebHookAjaxSettingsListPageController" 
-     	init-method="register" 
-     	/>
-
-     <bean id="webHookAjaxEditPageController" 
-     	class="webhook.teamcity.extension.WebHookAjaxEditPageController" 
-     	init-method="register" 
-     	/>
-      -->			
+		
      <bean id="buildInvokerProjectSettings" 
      	class="buildinvoker.settings.BuildInvokerProjectSettings" 
      	/>

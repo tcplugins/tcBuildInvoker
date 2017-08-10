@@ -53,9 +53,6 @@ public class BuildInvokerTabExtension extends ViewLogTab {
 	}
 
 	public boolean isAvailable(@NotNull HttpServletRequest request) {
-//		if (request != null) {
-//			return true;
-//		}
 		try{
 			this.settings = 
 				(BuildInvokerProjectSettings)this.projSettings.getSettings(this.server.findBuildInstanceById(Long.parseLong(request.getParameter("buildId"))).getProjectId(), "buildInvokers");
@@ -77,9 +74,8 @@ public class BuildInvokerTabExtension extends ViewLogTab {
 		return myPluginPath + "buildTabBuildInvokers.jsp";
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected void fillModel(Map model, HttpServletRequest request, SBuild sBuild) {
+	protected void fillModel(Map<String,Object> model, HttpServletRequest request, SBuild sBuild) {
 		this.settings = 
 			(BuildInvokerProjectSettings)this.projSettings.getSettings(sBuild.getProjectId(), "buildInvokers");
     	String message = this.settings.getBuildInovokersAsString();
