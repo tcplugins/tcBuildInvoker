@@ -88,17 +88,15 @@ public class CustomParameter {
 	public String getAsHtml(){
 		StringBuffer s = new StringBuffer();
 		if (this.type.equals("hidden")) {
-			s.append("<input type=\"hidden\" name=\"" + this.scope + ".name\" value=\"" + this.name + "\" />");
-			s.append("<input type=\"hidden\" name=\"" + this.scope + ".value\" value=\"" + this.value + "\" />");
+			s.append("<input type=\"hidden\" name=\"invoke." + this.scope + "." + this.name + "\" value=\"" + this.value + "\"/>");
 			s.append("<tr><td class=\"hiddenParam\">" + this.scope + "." + this.name + "</td><td class=\"hiddenParam\">" + this.value + "</td></tr>");
 		} else if (this.type.equals("option")){
-			s.append("<input type=\"hidden\" name=\"" + this.scope + ".name\" value=\"" + this.name + "\" />");
 			if (this.description != null){
 				s.append("<tr><td>" + this.description + "</td>");
 			} else {
 				s.append("<tr><td>" + this.scope + "." + this.name + "</td>");
 			}
-			s.append("<td><select id=\"" + this.uniqueKey + this.name + "\" name=\"" + this.scope + ".value\"");
+			s.append("<td><select id=\"" + this.uniqueKey + this.name + "\" name=\"invoke." + this.scope + "." + this.name + "\"");
 			if (this.required != null && this.required)
 				s.append(" required ");
 			s.append(">");
@@ -118,13 +116,12 @@ public class CustomParameter {
 
 	public String getArtifactStartAsHtml(){
 		StringBuffer s = new StringBuffer();
-			s.append("<input type=\"hidden\" name=\"" + this.scope + ".name\" value=\"" + this.name + "\" />");
 			if (this.description != null){
 				s.append("<tr><td>" + this.description + "</td>");
 			} else {
 				s.append("<tr><td>" + this.scope + "." + this.name + "</td>");
 			}
-			s.append("<td><select id=\"" + this.uniqueKey + this.name + "\" name=\"" + this.scope + ".value\"");
+			s.append("<td><select id=\"" + this.uniqueKey + this.name + "\" name=\"invoke." + this.scope + "." + this.name + "\"");
 			if (this.required != null && this.required)
 				s.append(" required ");
 			s.append(">");
