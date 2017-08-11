@@ -14,18 +14,20 @@ function submitForm(formId, buildNumber, buildName) {
 		jQueryBuildInvoker("#log").show().html("<img src='img/ajax-loader.gif' align=bottom width='16' height='16' /> Build request submitted");
 
 		var parameters = jQueryBuildInvoker("#form" + formId).serializeArray();
-		var jsonPayload = {};
-		jsonPayload.buildTypeId = buildNumber;
-		jsonPayload.comment = {};
-		jsonPayload.comment.text = "Triggered by BuildInvoker";
-		jsonPayload.properties = {}; 
-		jsonPayload.properties.property = parameters;
-		var data = JSON.stringify(jsonPayload);
+		var jsonPayload = {
+			    buildTypeId: buildNumber,
+			    comment: {
+			        text: "Triggered by BuildInvoker",
+			    },
+			    properties: {
+			        property: parameters
+			    }
+			};
 
 		jQueryBuildInvoker.ajax({
 			  url:"app/rest/buildQueue",
 			  type:"POST",
-			  data:data,
+			  data: JSON.stringify(jsonPayload),
 			  contentType:"application/json; charset=utf-8",
 			  accept:"application/json",
 			  dataType:"json",
